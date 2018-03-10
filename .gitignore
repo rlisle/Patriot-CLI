@@ -1,0 +1,14 @@
+
+# Node
+.DS_Store
+
+#VS Code
+# Debug environment variables (including login credentials)
+#.env
+
+#WebStorm
+.idea/
+
+# Ignore node modules. You'll need to run 'npm install' once
+node_modules/
+
