@@ -6,9 +6,12 @@ using the command line.
 
 ## Commands
 
-   patriot <opotions> <command>
+   patriot <options> <command>
    
-### list 
+### photons
+This will display a list of all active photon devices
+
+### devices 
 This will display a list of all active Patriot devices.
 
 ### on <device>
