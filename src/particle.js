@@ -22,6 +22,31 @@ function login(userid, password) {
 }
 
 /**
+ * getPhotons
+ * @param token
+ * @returns {Promise} array of active particle.io devices
+ */
+function getPhotons(token) {
+
+    // Get list of active Photons
+    return particle.listDevices({ auth: token}).then(function(result) {
+
+            let statusCode = result.statusCode; // s/b 200
+            if(statusCode != 200) {
+                console.log("Error listing devices: " + statusCode);
+                return [];
+            }
+
+            let photonNames = result.body.filter(function(item) {
+                return item.connected;
+            }).map(function(item){
+                return item.name;
+            });
+            return photonNames;
+        });
+}
+
+/**
  * getSupportedDevices
  * @param token
  * @returns {Promise} array of supported activity names
@@ -174,6 +199,7 @@ function publish(data, token) {
 module.exports = {
     login: login,
     getSupportedDevices: getSupportedDevices,
+    getPhotons: getPhotons,
     getDeviceIdForDevice: getDeviceIdForDevice,
     getVariable: getVariable,
     callFunction: callFunction,

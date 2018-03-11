@@ -24,11 +24,20 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "list",
+            "name": "photons",
             "program": "${workspaceFolder}/index.js",
             "cwd": "${workspaceFolder}",
             "envFile": "${workspaceFolder}/.env",
-            "args": [ "list" ]
+            "args": [ "photons" ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "devices",
+            "program": "${workspaceFolder}/index.js",
+            "cwd": "${workspaceFolder}",
+            "envFile": "${workspaceFolder}/.env",
+            "args": [ "devices" ]
         },
         {
             "type": "node",
