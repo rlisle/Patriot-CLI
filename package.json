@@ -12,6 +12,7 @@
     "patriot": "./index.js"
   },
   "dependencies": {
+    "co-prompt": "^1.0.0",
     "commander": "^2.14.1",
     "mqtt": "^2.16.0",
     "particle-api-js": "^7.1.1"
