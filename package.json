@@ -12,6 +12,7 @@
     "patriot": "./index.js"
   },
   "dependencies": {
+    "co": "^4.6.0",
     "co-prompt": "^1.0.0",
     "commander": "^2.14.1",
     "mqtt": "^2.16.0",

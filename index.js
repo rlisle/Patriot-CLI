@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 var program = require('commander');
+var program = require('co');
+var prompt = require('co-prompt');
 var mqtt = require('mqtt');
 var particle = require('./src/particle');
 
@@ -53,6 +55,18 @@ if (!program.args.length) {
     console.log("No args, calling help");
     program.help();
 };
+
+function login(username,password) {
+    username = username || process.env.PARTICLE_USERNAME;
+    password = password || process.env.PARTICLE_PASSWORD;
+    if( username==null || password==null) {
+        console.log("\nError: this command requires a particle.io account login.");
+        console.log("       Please specify your particle.io login info using");
+        console.log("       patriot login -u username and -p password");
+        console.log("\nAlternatively, you can set environment variables:\n");
+        console.log("   PARTICLE_USERNAME to your Particle.io login user");
+        console.log("   PARTICLE_PASSWORD to your Particle.io login password\n");
+    } else {
 
 function setDevice(level, device, otherDevices) {
     console.log("Setting device %s to %s",device,level);
