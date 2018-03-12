@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var program = require('commander');
-var program = require('co');
+var co = require('co');
 var prompt = require('co-prompt');
 var mqtt = require('mqtt');
 var particle = require('./src/particle');
@@ -60,13 +60,26 @@ function login(username,password) {
     username = username || process.env.PARTICLE_USERNAME;
     password = password || process.env.PARTICLE_PASSWORD;
     if( username==null || password==null) {
-        console.log("\nError: this command requires a particle.io account login.");
-        console.log("       Please specify your particle.io login info using");
-        console.log("       patriot login -u username and -p password");
-        console.log("\nAlternatively, you can set environment variables:\n");
-        console.log("   PARTICLE_USERNAME to your Particle.io login user");
-        console.log("   PARTICLE_PASSWORD to your Particle.io login password\n");
-    } else {
+        console.log("\nThis command requires a particle.io account login.");
+        console.log("     Please specify your particle.io credentials:");
+        console.log("     patriot login -u username and -p password");
+        console.log("\n     Alternatively, you can set environment variables:\n");
+        console.log("     PARTICLE_USERNAME to your Particle.io login username");
+        console.log("     PARTICLE_PASSWORD to your Particle.io password\n");
+    
+        if( username==null) {
+            co(function *() {
+                username = yield prompt('username: ');
+            });
+        }
+        if( password==null) {
+            co(function *() {
+                password = yield prompt.password('password: ');
+            });
+        }
+    }
+    return particle.login(username, password);
+}
 
 function setDevice(level, device, otherDevices) {
     console.log("Setting device %s to %s",device,level);
@@ -76,67 +89,41 @@ function setDevice(level, device, otherDevices) {
 }
 
 function listPhotons(username,password) {
-    username = username || process.env.PARTICLE_USERNAME;
-    password = password || process.env.PARTICLE_PASSWORD;
-    if( username==null || password==null) {
-        console.log("\nError: this command requires a particle.io account login.");
-        console.log("       Please specify your particle.io login info using");
-        console.log("       patriot login -u username and -p password");
-        console.log("\nAlternatively, you can set environment variables:\n");
-        console.log("   PARTICLE_USERNAME to your Particle.io login user");
-        console.log("   PARTICLE_PASSWORD to your Particle.io login password\n");
-    } else {
-        console.log("Listing Photons: user: %s, pw: %s",username,password);
-        // Log into particle
-        particle.login(username, password)
-            .then(function(token) {
-                particle.getPhotons(token)
-                    .then(function(photons) {
-                        console.log("Photons: ");
-                        photons.forEach(function (photon) {
-                            console.log("  %s",photon);
-                        });
-                },
-                    function(err) {
-                        console.log("List photons failed: ", err);
-                    })
-
-            },
+    login(username,password)
+    .then(function(token) {
+        particle.getPhotons(token)
+            .then(function(photons) {
+                console.log("Photons: ");
+                photons.forEach(function (photon) {
+                    console.log("  %s",photon);
+                });
+        },
             function(err) {
-                console.log("Could not log in.", err);
-            });
-    }
+                console.log("List photons failed: ", err);
+            })
+
+    },
+    function(err) {
+        console.log("Could not log in.", err);
+    });
 }
 
 function listDevices(username,password) {
-    username = username || process.env.PARTICLE_USERNAME;
-    password = password || process.env.PARTICLE_PASSWORD;
-    if( username==null || password==null) {
-        console.log("\nError: this command requires a particle.io account login.");
-        console.log("       Please specify your particle.io login info using");
-        console.log("       patriot login -u username and -p password");
-        console.log("\nAlternatively, you can set environment variables:\n");
-        console.log("   PARTICLE_USERNAME to your Particle.io login user");
-        console.log("   PARTICLE_PASSWORD to your Particle.io login password\n");
-    } else {
-        console.log("Listing devices: user: %s, pw: %s",username,password);
-        // Log into particle
-        particle.login(username, password)
-            .then(function(token) {
-                particle.getSupportedDevices(token)
-                    .then(function(devices) {   // Actually, activities
-                        console.log("Devices: ");
-                        devices.forEach(function (device) {
-                            console.log("  %s",device);
-                        });
-                },
-                    function(err) {
-                        console.log("List devices failed: ", err);
-                    })
-
-            },
+login(username, password)
+    .then(function(token) {
+        particle.getSupportedDevices(token)
+            .then(function(devices) {   // Actually, activities
+                console.log("Devices: ");
+                devices.forEach(function (device) {
+                    console.log("  %s",device);
+                });
+        },
             function(err) {
-                console.log("Could not log in.", err);
-            });
-    }
+                console.log("List devices failed: ", err);
+            })
+
+    },
+    function(err) {
+        console.log("Could not log in.", err);
+    });
 }
