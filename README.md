@@ -19,3 +19,8 @@ This will turn on the device named <device>
 
 ### off <device>
 This will turn off the device named <device>
+
+### reconnect
+Reconnect each photon to the MQTT broker.
+
+This is useful after the MQTT broker has been restarted.
