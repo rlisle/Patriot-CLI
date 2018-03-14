@@ -42,6 +42,15 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "reconnect",
+            "program": "${workspaceFolder}/index.js",
+            "cwd": "${workspaceFolder}",
+            "envFile": "${workspaceFolder}/.env",
+            "args": [ "reconnect" ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "on office",
             "program": "${workspaceFolder}/index.js",
             "cwd": "${workspaceFolder}",
