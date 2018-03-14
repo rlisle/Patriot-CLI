@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+
+const mqttURL = 'mqtt://192.168.10.124';
+
 var program = require('commander');
 var co = require('co');
 var prompt = require('co-prompt');
@@ -49,6 +52,14 @@ program
         setDevice(0, device, otherDevices);
     });
 
+program
+    .command('reconnect')
+    .description('reconnect photons to MQTT broker')
+    .action(function(options){
+        console.log("RECONNECT");
+        reconnect();
+    });
+
 program.parse(process.argv);
 
 if (!program.args.length) {
@@ -83,8 +94,15 @@ function login(username,password) {
 
 function setDevice(level, device, otherDevices) {
     console.log("Setting device %s to %s",device,level);
-    var client = mqtt.connect('mqtt://192.168.10.124');
+    var client = mqtt.connect(mqttURL);
     client.publish('patriot',device+':'+level);
+    client.end();
+}
+
+function reconnect(device) {
+    console.log("Reconnecting");
+    var client = mqtt.connect(mqttURL);
+    client.publish('patriot','reconnect');
     client.end();
 }
 
