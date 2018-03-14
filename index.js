@@ -59,7 +59,7 @@ if (!program.args.length) {
 function login(username,password) {
     username = username || process.env.PARTICLE_USERNAME;
     password = password || process.env.PARTICLE_PASSWORD;
-    if( username==null || password==null) {
+    if( !username || !password) {
         console.log("\nThis command requires a particle.io account login.");
         console.log("     Please specify your particle.io credentials:");
         console.log("     patriot login -u username and -p password");
@@ -67,12 +67,12 @@ function login(username,password) {
         console.log("     PARTICLE_USERNAME to your Particle.io login username");
         console.log("     PARTICLE_PASSWORD to your Particle.io password\n");
     
-        if( username==null) {
+        if( !username ) {
             co(function *() {
                 username = yield prompt('username: ');
             });
         }
-        if( password==null) {
+        if( !password ) {
             co(function *() {
                 password = yield prompt.password('password: ');
             });
