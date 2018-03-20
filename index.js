@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const mqttURL = 'mqtt://192.168.10.124';
+const mqttTopic = 'patriot';
 
 var program = require('commander');
 var mqtt = require('mqtt');
@@ -83,15 +84,19 @@ function login(username,password) {
 function setDevice(level, device, otherDevices) {
     console.log("Setting device %s to %s",device,level);
     var client = mqtt.connect(mqttURL);
-    client.publish('patriot',device+':'+level);
-    client.end();
+    client.on('connect', function () { 
+        client.publish(mqttTopic,device+':'+level);
+        client.end();
+    })    
 }
 
 function reconnect(device) {
     console.log("Reconnecting");
     var client = mqtt.connect(mqttURL);
-    client.publish('patriot','reconnect');
-    client.end();
+    client.on('connect', function () { 
+        client.publish('patriot','reconnect');
+        client.end();
+    })
 }
 
 function listPhotons(username,password) {
