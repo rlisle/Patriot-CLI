@@ -3,8 +3,6 @@
 const mqttURL = 'mqtt://192.168.10.124';
 
 var program = require('commander');
-var co = require('co');
-var prompt = require('co-prompt');
 var mqtt = require('mqtt');
 var particle = require('./src/particle');
 
@@ -77,17 +75,7 @@ function login(username,password) {
         console.log("\n     Alternatively, you can set environment variables:\n");
         console.log("     PARTICLE_USERNAME to your Particle.io login username");
         console.log("     PARTICLE_PASSWORD to your Particle.io password\n");
-    
-        if( !username ) {
-            co(function *() {
-                username = yield prompt('username: ');
-            });
-        }
-        if( !password ) {
-            co(function *() {
-                password = yield prompt.password('password: ');
-            });
-        }
+        return Promise.reject("Missing username or password");
     }
     return particle.login(username, password);
 }

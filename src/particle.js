@@ -13,7 +13,6 @@ var token;
  * @returns {PromiseLike<T> | Promise<T> | *} access token
  */
 function login(userid, password) {
-    console.log("particle.login: userid:%s, password:%s",userid,password);
     return particle.login({username: userid, password: password})
         .then(function (data) {
             token = data.body.access_token
@@ -33,7 +32,6 @@ function getPhotons(token) {
 
             let statusCode = result.statusCode; // s/b 200
             if(statusCode != 200) {
-                console.log("Error listing devices: " + statusCode);
                 return [];
             }
 
@@ -56,11 +54,8 @@ function getSupportedDevices(token) {
     // Get list of active Photons
     return particle.listDevices({ auth: token}).then(function(result) {
 
-            // console.log("getSupportedDevices photons: " + JSON.stringify(result));
-
             let statusCode = result.statusCode; // s/b 200
             if(statusCode != 200) {
-                console.log("Error listing devices: " + statusCode);
                 return [];
             }
 
@@ -88,7 +83,6 @@ function getSupportedDevices(token) {
                             return 0;
                         },
                         function (err) {
-                            console.log("Error reading Devices variable for " + name);
                             return 1;
                         }),
                     new Promise(function(resolve,reject){
@@ -102,7 +96,6 @@ function getSupportedDevices(token) {
         }); /*.timeout(5000,"timeout");*/
         },
         function(err){
-            console.log("Error listing devices. Returning devices = "+JSON.stringify(devices));
             return devices;
         });
 }
@@ -121,7 +114,6 @@ function getDeviceIdForDevice(device, token) {
 
             let statusCode = result.statusCode; // s/b 200
             if(statusCode != 200) {
-                console.log("Error listing devices: " + statusCode);
                 return undefined;
             }
 
@@ -141,13 +133,11 @@ function getDeviceIdForDevice(device, token) {
                         //TODO: Case mismatch. Need to perform case insensitive match.
                         let lcDevices = devices.toLocaleLowerCase();
                         if (lcDevices.indexOf(device) != -1) {
-                            console.log("Found device, id = " + name);
                             deviceId = name;
                             return name;
                         }
                     },
                     function (err) {
-                        console.log("Error reading Devices variable for " + name);
                         return undefined;
                     });
                 promises.push(p);
@@ -157,7 +147,6 @@ function getDeviceIdForDevice(device, token) {
         });
         },
         function(err){
-            console.log("Error listing devices. Returning undefined");
             return undefined;
         });
 }
@@ -185,13 +174,11 @@ function publish(data, token) {
     let args = { name: "patriot", data: data, auth: token, isPrivate: true };
     return particle.publishEvent(args)
         .then((response) => {
-        console.log("Success: "+JSON.stringify(response));
     return response.body.ok;
 },
     (err) => {  // Want to differentiate between invalid token, network error, API error
         //TODO: parse the error and return a meaningful message
         let errorText = err.body.error_description;
-        console.log("Error: "+JSON.stringify(err));
         throw(errorText);
     });
 }
