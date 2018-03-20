@@ -10,16 +10,16 @@
             "name": "no arguments",
             "program": "${workspaceFolder}/index.js",
             "cwd": "${workspaceFolder}",
-            "envFile": "${workspaceFolder}/.env",
+            "envFile": "${workspaceFolder}/.env"
         },
         {
             "type": "node",
             "request": "launch",
-            "name": "help",
+            "name": "--help",
             "program": "${workspaceFolder}/index.js",
             "cwd": "${workspaceFolder}",
             "envFile": "${workspaceFolder}/.env",
-            "args": [ "help" ]
+            "args": [ "--help" ]
         },
         {
             "type": "node",

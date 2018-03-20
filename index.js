@@ -59,6 +59,16 @@ program
         reconnect();
     });
 
+program.on('--help', function(){
+    console.log("");
+    console.log("  Examples:");
+    console.log("")
+    console.log("    patriot on office");
+    console.log("    patriot off office");
+    console.log("");
+});
+    
+    
 program.parse(process.argv);
 
 if (!program.args.length) {
