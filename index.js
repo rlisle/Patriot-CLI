@@ -6,6 +6,7 @@ const mqttTopic = 'patriot';
 var program = require('commander');
 var mqtt = require('mqtt');
 var particle = require('./src/particle');
+var ip = require('ip');
 
 program
     .version('0.0.1', '-v, --version')
@@ -54,9 +55,11 @@ program
 program
     .command('reconnect')
     .description('reconnect photons to MQTT broker')
+    .option('-u, --username <username>', 'Particle login username')
+    .option('-p, --password <password>', 'Particle login password')
     .action(function(options){
         console.log("RECONNECT");
-        reconnect();
+        reconnect(options.username,options.password);
     });
 
 program.on('--help', function(){
@@ -100,12 +103,20 @@ function setDevice(level, device, otherDevices) {
     })    
 }
 
-function reconnect(device) {
+function reconnect(username, password) {
     console.log("Reconnecting");
-    var client = mqtt.connect(mqttURL);
-    client.on('connect', function () { 
-        client.publish('patriot','reconnect');
-        client.end();
+    // Login into Particle.io
+    var address = ip.address();
+    var ipDigits = address.split('.');
+    console.log("IP = "+address);
+    console.log("ipDigits = "+ipDigits);
+
+    // Broadcast to all Photons
+    login(username,password)
+    .then(function(token) {
+        var mqttEvent = 'mqtt:'+address;
+        console.log("publishing "+mqttEvent);
+        particle.publish(mqttEvent, token);
     })
 }
 

@@ -4,7 +4,9 @@
   "description": "Patriot command line tool",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "subscribe": "mosquitto_sub -h 192.168.10.124 -t patriot",
+    "publish": "mosquitto_pub -h 192.168.10.124 -t patriot -m test:100"
   },
   "author": "Ron Lisle",
   "license": "Apache-2.0",
@@ -13,7 +15,9 @@
   },
   "dependencies": {
     "commander": "^2.14.1",
+    "ip": "^1.1.5",
     "mqtt": "^2.16.0",
+    "os": "^0.1.1",
     "particle-api-js": "^7.1.1"
   }
 }

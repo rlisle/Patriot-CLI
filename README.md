@@ -4,6 +4,10 @@ Command line interface for Patriot
 This utility allows interrogating and controlling Patriot devices
 using the command line.
 
+In addition, it provides functionality for initializing the Patriot
+system. The MQTT broker can use this to transmit its IP address to
+the Patriot controllers.
+
 ## Commands
 
    patriot <options> <command>
