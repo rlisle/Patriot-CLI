@@ -104,16 +104,13 @@ function setDevice(level, device, otherDevices) {
 }
 
 function reconnect(username, password) {
-    console.log("Reconnecting");
     // Login into Particle.io
     var address = ip.address();
     var ipDigits = address.split('.');
-    console.log("IP = "+address);
-    console.log("ipDigits = "+ipDigits);
-
-    // Broadcast to all Photons
     login(username,password)
     .then(function(token) {
+        
+        // Broadcast to all Photons
         var mqttEvent = 'mqtt:'+address;
         console.log("publishing "+mqttEvent);
         particle.publish(mqttEvent, token);
