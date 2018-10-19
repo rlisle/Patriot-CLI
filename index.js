@@ -98,7 +98,7 @@ function setDevice(level, device, otherDevices) {
     console.log("Setting device %s to %s",device,level);
     var client = mqtt.connect(mqttURL);
     client.on('connect', function () { 
-        client.publish(mqttTopic,device+':'+level);
+        client.publish(mqttTopic+'/device/'+device,level);
         client.end();
     })    
 }
