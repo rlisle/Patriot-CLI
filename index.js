@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const mqttURL = 'mqtt://192.168.10.124';
+const mqttURL = 'mqtt://192.168.10.168';
 const mqttTopic = 'patriot';
 
 var program = require('commander');
@@ -9,7 +9,7 @@ var particle = require('./src/particle');
 var ip = require('ip');
 
 program
-    .version('0.0.1', '-v, --version')
+    .version('1.0.0', '-v, --version')
     .option('-d, --debug', 'Display diagnostic information')
 
 program
