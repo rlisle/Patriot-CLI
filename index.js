@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const mqttURL = 'rons-mac-mini';
+const mqttURL = 'mqtt:rons-mac-mini';
 const mqttTopic = 'patriot';
 
 var program = require('commander');
