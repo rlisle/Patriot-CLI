@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const mqttURL = 'mqtt://192.168.10.168';
+const mqttURL = 'rons-mac-mini';
 const mqttTopic = 'patriot';
 
 var program = require('commander');
